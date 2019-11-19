@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Candidato;
 import model.Voto;
 
@@ -105,6 +107,7 @@ public class VotoDAO extends ConexaoDAO {
 
             while (rs.next()) {
 
+                voto = new Voto();    
                 voto.setId_voto(rs.getInt("id_voto"));
                 voto.setId_candidato(rs.getInt("id_candidato"));
                 voto.setId_eleicao(rs.getInt("id_eleicao"));
@@ -145,7 +148,16 @@ public class VotoDAO extends ConexaoDAO {
             
             Candidato candidato = candidatoDAO.buscarCandidatoByNumeroCandidato(numeroCandidato);
             
-            
+            if(candidato == null){
+                try {
+                    throw new Exception();
+                    
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    Logger.getLogger(VotoDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    return false;
+                }
+            }
             stm.setInt(1, candidato.getIdCandidato());
             stm.setInt(2, idEleitor);
             stm.setInt(3, idEleicao);

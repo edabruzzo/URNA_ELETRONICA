@@ -357,7 +357,4 @@ INSERT INTO tb_candidato(
 'Mapinguari',
 9504);
 --SELECT * FROM tb_candidato;
-
-
-
-select * from tb_voto;
+--select * from tb_voto;

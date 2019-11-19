@@ -114,6 +114,7 @@ public class VotacaoController extends HttpServlet {
             } catch (Exception ex) {
                 
                 stringErro = "Já existe um voto deste eleitor para esta eleição";
+                stringSucesso = null;
                 this.doGet(request, response);
                 Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
             }
