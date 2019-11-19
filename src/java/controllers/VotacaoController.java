@@ -105,7 +105,7 @@ public class VotacaoController extends HttpServlet {
             Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        if (voto == null){
+        if (voto != null){
             
             try {
                 

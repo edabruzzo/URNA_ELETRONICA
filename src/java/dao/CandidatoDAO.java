@@ -228,15 +228,13 @@ public class CandidatoDAO extends ConexaoDAO {
     Candidato buscarCandidatoByNumeroCandidato(int numeroCandidato) throws SQLException {
     
         Connection conn = this.criaConexao();
-        String sql = "SELECT * FROM tb_candidato WHERE numero_candidato = ?";
-        PreparedStatement stm = conn.prepareStatement(sql);
-        stm.setInt(1, numeroCandidato);
-
+        String sql = "SELECT * FROM tb_candidato WHERE numero_candidato = "+numeroCandidato;
+        Statement stm = conn.createStatement();
         ResultSet rs = stm.executeQuery(sql);
-        Candidato candidato = new Candidato();
+        Candidato candidato = null;
 
         while (rs.next()) {
-
+            candidato = new Candidato();
             int idCanditado = rs.getInt("id_candidato");
             String nomeCandidato = rs.getString("nome_candidato");
             Partido partido = partidoDAO.buscaById(rs.getInt("id_partido"));

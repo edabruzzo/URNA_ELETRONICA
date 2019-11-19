@@ -97,7 +97,7 @@ public class VotoDAO extends ConexaoDAO {
         ResultSet rs = null;
         String sql = "SELECT * FROM tb_voto WHERE id_eleicao = " + idEleicao + " "
                 + "AND id_eleitor = " + idEleitor + ";";
-        Voto voto = new Voto();
+        Voto voto = null;
 
         try {
             statement = conn.createStatement();
@@ -136,7 +136,7 @@ public class VotoDAO extends ConexaoDAO {
                 + "(\n"
                 + "?,\n"
                 + "?,\n"
-                + "'?');\n";
+                + "?);\n";
 
         
         PreparedStatement stm = null;
