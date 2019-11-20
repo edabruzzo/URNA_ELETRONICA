@@ -105,6 +105,14 @@ INSERT INTO tb_eleitor(
 	RG) values('Lucas', 20, 456789, 22222);
 
 
+INSERT INTO tb_eleitor(
+	nome,
+	idade,
+	titulo_eleitor,
+	RG) values('Gasparzinho', 5, 456789, 33333);
+
+
+
 
 INSERT INTO tb_partido(
 
@@ -428,6 +436,23 @@ INSERT INTO tb_voto (
 	id_candidato,
         id_eleitor,
         id_eleicao)values(null, 4, 3);
+
+
+INSERT INTO tb_voto (
+	id_candidato,
+        id_eleitor,
+        id_eleicao)values(15, 5, 1);
+
+INSERT INTO tb_voto (
+	id_candidato,
+        id_eleitor,
+        id_eleicao)values(16, 5, 2);
+
+
+INSERT INTO tb_voto (
+	id_candidato,
+        id_eleitor,
+        id_eleicao)values(17, 5, 3);
 
 
 --SELECT * FROM tb_candidato;
