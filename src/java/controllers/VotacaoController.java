@@ -84,6 +84,7 @@ public class VotacaoController extends HttpServlet {
         }catch(Exception ex){
             
             ex.printStackTrace();
+            stringSucesso = null;
             stringErro = "Erro no preenchimento do RG";
             
         }
@@ -129,7 +130,7 @@ public class VotacaoController extends HttpServlet {
             }
             
          if(sucesso){
-             
+             stringErro = null;
              stringSucesso = "Voto inserido no sistema com sucesso !";
              this.doGet(request, response);
              
@@ -137,6 +138,7 @@ public class VotacaoController extends HttpServlet {
          }else{
              
              stringErro = "Houve um erro ao inserir o seu voto. Tente novamente !";
+             stringSucesso = null;
              this.doGet(request, response);
          }
          

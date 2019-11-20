@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS tb_candidato(
 
    CREATE TABLE IF NOT EXISTS tb_voto(
 	id_voto SERIAL PRIMARY KEY ,
-	id_candidato int NOT NULL REFERENCES tb_candidato(id_candidato),
+	id_candidato int REFERENCES tb_candidato(id_candidato),
         id_eleitor int NOT NULL REFERENCES tb_eleitor(id_eleitor),
         id_eleicao int NOT NULL REFERENCES tb_eleicao(id_eleicao)
 	
@@ -96,13 +96,13 @@ INSERT INTO tb_eleitor(
 	nome,
 	idade,
 	titulo_eleitor,
-	RG) values('Martin', 25, 456789, 456789);
+	RG) values('Martin', 25, 456789, 11111);
 
 INSERT INTO tb_eleitor(
 	nome,
 	idade,
 	titulo_eleitor,
-	RG) values('Lucas', 20, 456789, 456789);
+	RG) values('Lucas', 20, 456789, 22222);
 
 
 
@@ -356,5 +356,79 @@ INSERT INTO tb_candidato(
 (select id_partido from tb_partido where numero_partido = 95),
 'Mapinguari',
 9504);
+
+
+INSERT INTO tb_voto (
+	id_candidato,
+        id_eleitor,
+        id_eleicao)values(1, 1, 1);
+
+INSERT INTO tb_voto (
+	id_candidato,
+        id_eleitor,
+        id_eleicao)values(null, 1, 2);
+
+
+
+INSERT INTO tb_voto (
+	id_candidato,
+        id_eleitor,
+        id_eleicao)values(2, 1, 3);
+
+
+
+INSERT INTO tb_voto (
+	id_candidato,
+        id_eleitor,
+        id_eleicao)values(3, 2, 1);
+
+INSERT INTO tb_voto (
+	id_candidato,
+        id_eleitor,
+        id_eleicao)values(4, 2, 2);
+
+
+INSERT INTO tb_voto (
+	id_candidato,
+        id_eleitor,
+        id_eleicao)values(5, 2, 3);
+
+
+
+INSERT INTO tb_voto (
+	id_candidato,
+        id_eleitor,
+        id_eleicao)values(5, 3, 1);
+
+
+INSERT INTO tb_voto (
+	id_candidato,
+        id_eleitor,
+        id_eleicao)values(null, 3, 2);
+
+
+INSERT INTO tb_voto (
+	id_candidato,
+        id_eleitor,
+        id_eleicao)values(6, 3, 3);
+
+
+INSERT INTO tb_voto (
+	id_candidato,
+        id_eleitor,
+        id_eleicao)values(6, 4, 1);
+
+INSERT INTO tb_voto (
+	id_candidato,
+        id_eleitor,
+        id_eleicao)values(null, 4, 2);
+
+
+INSERT INTO tb_voto (
+	id_candidato,
+        id_eleitor,
+        id_eleicao)values(null, 4, 3);
+
+
 --SELECT * FROM tb_candidato;
 --select * from tb_voto;

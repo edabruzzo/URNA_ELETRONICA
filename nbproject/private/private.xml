@@ -4,13 +4,7 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Emm/Documents/NetBeansProjects/PROJETO_URNA_ELETRONICA/UrnaEletronica/src/java/controllers/VotacaoController.java</file>
-            <file>file:/C:/Users/Emm/Documents/NetBeansProjects/PROJETO_URNA_ELETRONICA/UrnaEletronica/src/java/model/Candidato.java</file>
-            <file>file:/C:/Users/Emm/Documents/NetBeansProjects/PROJETO_URNA_ELETRONICA/UrnaEletronica/src/java/model/Voto.java</file>
-            <file>file:/C:/Users/Emm/Documents/NetBeansProjects/PROJETO_URNA_ELETRONICA/UrnaEletronica/web/votacao.jsp</file>
-            <file>file:/C:/Users/Emm/Documents/NetBeansProjects/PROJETO_URNA_ELETRONICA/UrnaEletronica/src/java/model/Eleicao.java</file>
             <file>file:/C:/Users/Emm/Documents/NetBeansProjects/PROJETO_URNA_ELETRONICA/UrnaEletronica/ScriptsSQL/criaInfraestrutura_POSTGRES.sql</file>
-            <file>file:/C:/Users/Emm/Documents/NetBeansProjects/PROJETO_URNA_ELETRONICA/UrnaEletronica/src/java/dao/EleitorDAO.java</file>
-            <file>file:/C:/Users/Emm/Documents/NetBeansProjects/PROJETO_URNA_ELETRONICA/UrnaEletronica/src/java/dao/CandidatoDAO.java</file>
             <file>file:/C:/Users/Emm/Documents/NetBeansProjects/PROJETO_URNA_ELETRONICA/UrnaEletronica/src/java/dao/VotoDAO.java</file>
         </group>
     </open-files>
