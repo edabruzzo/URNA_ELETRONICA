@@ -177,9 +177,12 @@ INSERT INTO tb_candidato(
 	)values
 (
 (select id_partido from tb_partido where numero_partido = 95),
-'LULA ZUEIRO',
+'MARINA ETÊSILVA',
 2,
 1);
+
+
+
 
 
 
@@ -193,6 +196,19 @@ INSERT INTO tb_candidato(
 (select id_partido from tb_partido where numero_partido = 95),
 'CIRO SEM NOÇÃO',
 3,
+1);
+
+
+INSERT INTO tb_candidato( 
+	id_partido,
+	nome_candidato,
+        numero_candidato,
+        id_eleicao
+	)values
+(
+(select id_partido from tb_partido where numero_partido = 95),
+'LULA ZUEIRO',
+4,
 1);
 
 
@@ -763,3 +779,11 @@ INSERT INTO tb_voto (
 
 --SELECT * FROM tb_candidato;
 --select * from tb_voto;
+
+SELECT COUNT(*) AS Votos_Totais, 
+                C.nome_candidato AS Nome_Candidato 
+                FROM public.tb_voto AS V 
+                    INNER JOIN tb_candidato AS C 
+                        ON V.id_candidato = C.id_candidato
+                GROUP BY C.nome_candidato
+                ORDER BY COUNT(*)

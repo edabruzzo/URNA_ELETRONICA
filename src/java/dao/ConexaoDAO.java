@@ -143,7 +143,9 @@ public class ConexaoDAO {
         setURL("jdbc:postgresql://localhost:5432/urna");
         setUSER("postgres");
         setPASSWORD(System.getenv("POSTGRES_PASSWORD"));
-
+        
+        System.out.println(System.getProperty("user.dir"));
+        
         File arquivoInfra = new File(System.getProperty("user.dir").concat("/ScriptsSQL/"
                 + "criaInfraestrutura_POSTGRES.sql"));
 

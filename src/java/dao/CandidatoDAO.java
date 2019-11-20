@@ -136,7 +136,7 @@ public class CandidatoDAO {
     public List<Candidato> listarTodosCandidatos(Connection conn) throws SQLException {
 
         Statement stm = conn.createStatement();
-        String sql = "SELECT * FROM tb_candidato ORDER BY id_candidato";
+        String sql = "SELECT * FROM tb_candidato ORDER BY numero_candidato";
         ResultSet rs = stm.executeQuery(sql);
 
         List<Candidato> listaCandidatos = new ArrayList<Candidato>();

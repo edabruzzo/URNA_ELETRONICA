@@ -54,7 +54,7 @@ public class RelatoriosDAO extends ConexaoDAO {
 
     public HashMap<String, Integer> listarVotosPorCandidato() throws SQLException {
 
-        HashMap<String, Integer> votosPorPartido = new HashMap<>();
+        HashMap<String, Integer> votosPorCandidato = new HashMap<>();
         Connection conn = this.criaConexao();
         Statement statement = null;
 
@@ -71,7 +71,7 @@ public class RelatoriosDAO extends ConexaoDAO {
             rs = statement.executeQuery(sql);
 
             while (rs.next()) {
-                votosPorPartido.put(rs.getString("Nome_Candidato"), rs.getInt("Votos_Totais"));
+                votosPorCandidato.put(rs.getString("Nome_Candidato"), rs.getInt("Votos_Totais"));
             }
 
         } catch (SQLException ex) {
@@ -81,6 +81,6 @@ public class RelatoriosDAO extends ConexaoDAO {
             rs.close();
             this.fecharConexao(conn);
         }
-        return votosPorPartido;
+        return votosPorCandidato;
     }
 }

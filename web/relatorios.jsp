@@ -35,9 +35,6 @@
                    aria-disabled="true">Home</a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="${pageContext.request.contextPath}/criarInfra">Criar Infraestrutura</a>
-            </li>
-            <li class="page-item">
                 <a class="page-link" href="${pageContext.request.contextPath}/votacao">Votação</a>
             </li>
             <li class="page-item disabled">

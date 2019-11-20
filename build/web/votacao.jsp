@@ -31,13 +31,10 @@
                 <a class="page-link" href="${pageContext.request.contextPath}" tabindex="-1"
                    aria-disabled="true">Home</a>
             </li>
-            <li class="page-item">
-                <a class="page-link" href="${pageContext.request.contextPath}/criarInfra">Criar Infraestrutura</a>
-            </li>
-            <li class="page-item">
+            <li class="page-item disabled">
                 <a class="page-link" href="${pageContext.request.contextPath}/votacao">Votação</a>
             </li>
-            <li class="page-item disabled">
+            <li class="page-item ">
                 <a class="page-link" href="${pageContext.request.contextPath}/relatorios">Relatórios</a>
             </li>
             <%--        <li class="page-item">--%>

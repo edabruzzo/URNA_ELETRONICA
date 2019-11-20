@@ -40,17 +40,14 @@ and open the template in the editor.
 
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" href="${pageContext.request.contextPath}" tabindex="-1"
+            <li class="page-item disabled">
+                <a class="page-link disabled" href="${pageContext.request.contextPath}" tabindex="-1"
                    aria-disabled="true">Home</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="${pageContext.request.contextPath}/criarInfra">Criar Infraestrutura</a>
             </li>
             <li class="page-item">
                 <a class="page-link" href="${pageContext.request.contextPath}/votacao">Votação</a>
             </li>
-            <li class="page-item disabled">
+            <li class="page-item">
                 <a class="page-link" href="${pageContext.request.contextPath}/relatorios">Relatórios</a>
             </li>
             <%--        <li class="page-item">--%>
