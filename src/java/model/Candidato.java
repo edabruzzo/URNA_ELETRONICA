@@ -15,6 +15,7 @@ public class Candidato {
     private int numeroCandidato;
     private String nomeCandidato;
     private Partido partido;
+    private Eleicao eleicao;
 
 
     public Partido getPartido() {
@@ -50,6 +51,14 @@ public class Candidato {
 
     public void setNomeCandidato(String nomeCandidato) {
         this.nomeCandidato = nomeCandidato;
+    }
+
+    public Eleicao getEleicao() {
+        return eleicao;
+    }
+
+    public void setEleicao(Eleicao eleicao) {
+        this.eleicao = eleicao;
     }
     
     
