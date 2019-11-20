@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers;
+package principal.controllers;
 
-import dao.CandidatoDAO;
-import dao.EleicaoDAO;
-import dao.EleitorDAO;
-import dao.VotoDAO;
+import principal.dao.CandidatoDAO;
+import principal.dao.EleicaoDAO;
+import principal.dao.EleitorDAO;
+import principal.dao.VotoDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -20,16 +20,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Candidato;
-import model.Eleicao;
-import model.Eleitor;
-import model.Voto;
+import principal.model.Candidato;
+import principal.model.Eleicao;
+import principal.model.Eleitor;
+import principal.model.Voto;
 
 /**
  *
  * @author Emm
  */
-@WebServlet(urlPatterns = {"/votacao"}, loadOnStartup = 0)
+@WebServlet(name = "Votacao", urlPatterns = {"/votacao"}, loadOnStartup = 0)
 public class VotacaoController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -63,9 +63,7 @@ public class VotacaoController extends HttpServlet {
         request.setAttribute("stringErro", stringErro);
         request.setAttribute("stringSucesso", stringSucesso);
         
-        RequestDispatcher dispatcher = request.getServletContext()
-                .getRequestDispatcher("/votacao.jsp");
-
+        RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/votacao.jsp");
         dispatcher.forward(request, response);
 
     }
@@ -99,7 +97,7 @@ public class VotacaoController extends HttpServlet {
         
         VotoDAO votoDAO = new VotoDAO();
         
-        Voto voto = null; 
+        Voto voto = null;
                 
         try {
             voto = votoDAO.pesquisarVotoByIdEleicaoIdEleitor(idEleicao, eleitor.getId_Eleitor());

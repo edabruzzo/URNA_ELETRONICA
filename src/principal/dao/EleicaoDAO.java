@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package principal.dao;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,9 +11,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import model.Candidato;
-import model.Eleicao;
-import model.Voto;
+import principal.model.Candidato;
+import principal.model.Eleicao;
+import principal.model.Voto;
 
 /**
  *
@@ -47,7 +47,7 @@ public class EleicaoDAO extends ConexaoDAO {
             }
 
         } catch (SQLException ex) {
-            
+
             ex.printStackTrace();        //Logger.getLogger(CandidatoDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
 
@@ -60,8 +60,8 @@ public class EleicaoDAO extends ConexaoDAO {
         return listaEleicoes;
     }
 
-    
-    
+
+
     private List<Candidato> listaCandidatosByEleicao(int idEleicao) throws SQLException {
 
         String sql = "SELECT c.* FROM tb_candidato c \n"
@@ -83,14 +83,14 @@ public class EleicaoDAO extends ConexaoDAO {
     }
 
     public Eleicao buscaById(int idEleicao) throws SQLException {
-    
+
         Connection conn = this.criaConexao();
         Statement stmt = null;
         String sql = "SELECT * FROM tb_eleicao WHERE id_eleicao = "+idEleicao;
         ResultSet rs = null;
         Eleicao eleicao = null;
         try {
-            
+
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
 
@@ -108,7 +108,7 @@ public class EleicaoDAO extends ConexaoDAO {
 
         } catch (SQLException ex) {
             ex.printStackTrace();        //Logger.getLogger(CandidatoDAO.class.getName()).log(Level.SEVERE, null, ex);
-        
+
         } finally {
 
             stmt.close();
@@ -118,7 +118,7 @@ public class EleicaoDAO extends ConexaoDAO {
 
         return eleicao;
 
-    
+
     }
 
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package principal.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,9 +12,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import model.Candidato;
-import model.Eleicao;
-import model.Partido;
+import principal.model.Eleicao;
+import principal.model.Candidato;
+import principal.model.Partido;
 
 /**
  *
@@ -55,7 +55,7 @@ public class CandidatoDAO extends ConexaoDAO {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-            //ex.printStackTrace();        
+            //ex.printStackTrace();
             //Logger.getLogger(CandidatoDAO.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
@@ -212,7 +212,7 @@ public class CandidatoDAO extends ConexaoDAO {
             String nomeCandidato = rs.getString("nome_candidato");
             Partido partido = partidoDAO.buscaById(rs.getInt("id_partido"));
             Eleicao eleicao = eleicaoDAO.buscaById(rs.getInt("id_eleicao"));
-            
+
             candidato.setIdCandidato(idCanditado);
             candidato.setNumeroCandidato(rs.getInt("numero_candidato"));
             candidato.setNomeCandidato(nomeCandidato);

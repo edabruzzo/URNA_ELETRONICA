@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers;
+package principal.controllers;
 
-import dao.ConexaoDAO;
+import principal.dao.ConexaoDAO;
+
 import java.io.IOException;
-import java.util.Scanner;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Emm
  */
-@WebServlet(urlPatterns = {"/criarInfra"}, loadOnStartup = 1)
+@WebServlet(name = "CriarInfra", urlPatterns = {"/criarInfra"}, loadOnStartup = 1)
 public class CriarInfraController extends HttpServlet {
     
 
