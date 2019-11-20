@@ -6,27 +6,27 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Eleitor;
 
 /**
  *
  * @author Emm
  */
-public class EleitorDAO extends ConexaoDAO {
+public class EleitorDAO {
 
-
-    Eleitor buscaByID(int idEleitor) throws SQLException {
+    Eleitor buscaByID(Connection conn, int idEleitor) throws SQLException {
 
         Eleitor eleitor = new Eleitor();
-        
-        
-        Connection conn = this.criaConexao();
+
         Statement stmt = null;
         ResultSet rs = null;
-        
+
         String sql = "SELECT * FROM tb_eleitor WHERE id_eleitor = " + idEleitor;
 
         try {
@@ -45,30 +45,26 @@ public class EleitorDAO extends ConexaoDAO {
             }
 
         } catch (SQLException ex) {
-            
+
             ex.printStackTrace();        //Logger.getLogger(CandidatoDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
 
             stmt.close();
             rs.close();
-            this.fecharConexao(conn);
         }
 
         return eleitor;
 
     }
 
-    public Eleitor buscaEleitorByRG(String rgEleitor) throws SQLException {
+    public Eleitor buscaEleitorByRG(Connection conn, String rgEleitor) throws SQLException {
 
+        Eleitor eleitor = null;
 
-        Eleitor eleitor = new Eleitor();
-        
-        
-        Connection conn = this.criaConexao();
         Statement stmt = null;
         ResultSet rs = null;
-        
-        String sql = "SELECT * FROM tb_eleitor WHERE RG = '"+rgEleitor+"';";
+
+        String sql = "SELECT * FROM tb_eleitor WHERE RG = '" + rgEleitor + "';";
 
         try {
 
@@ -76,7 +72,8 @@ public class EleitorDAO extends ConexaoDAO {
             rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
-
+                
+                eleitor = new Eleitor();
                 eleitor.setId_Eleitor(rs.getInt("id_eleitor"));
                 eleitor.setIdade(rs.getInt("idade"));
                 eleitor.setNome(rs.getString("nome"));
@@ -86,21 +83,46 @@ public class EleitorDAO extends ConexaoDAO {
             }
 
         } catch (SQLException ex) {
-            
+
             ex.printStackTrace();        //Logger.getLogger(CandidatoDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
 
             stmt.close();
             rs.close();
-            this.fecharConexao(conn);
         }
 
         return eleitor;
 
     }
 
+    public String criarEleitor(Connection conn, Eleitor eleitor) throws SQLException {
+
+        String mensagem = null;
+        String sql = "INSERT INTO tb_eleitor (nome, idade, RG) \n"
+                + "values(?, ?, ?);";
+
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, eleitor.getNome());
+            stmt.setInt(2, eleitor.getIdade());
+            stmt.setInt(3, eleitor.getRG());
+            stmt.execute();
+
+            mensagem = "Eleitor inserido no banco com sucesso";
+
+        } catch (SQLException ex) {
+            
+            if(ex.getMessage().contains("duplicate key value violates unique constraint \"tb_eleitor_rg_key\""))
+            
+                mensagem = "Já existe usuário com o mesmo número de RG";
+            
+            Logger.getLogger(EleitorDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            stmt.close();
+        }
         
-        
-        
-        
+        return mensagem;
+    }
+
 }

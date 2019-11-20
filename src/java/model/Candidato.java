@@ -5,6 +5,13 @@
  */
 package model;
 
+import dao.ConexaoDAO;
+import dao.EleicaoDAO;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Emm
@@ -15,8 +22,30 @@ public class Candidato {
     private int numeroCandidato;
     private String nomeCandidato;
     private Partido partido;
-    private Eleicao eleicao;
+    private int idEleicao;
 
+    
+    
+    
+    public String eleicaoCandidato(){
+        
+        EleicaoDAO eleicaoDAO = new EleicaoDAO();
+        Connection conn = new ConexaoDAO().criaConexao();
+        Eleicao eleicao = new Eleicao();
+        try {
+        
+            eleicao = eleicaoDAO.buscaById(conn, this.getIdEleicao());
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(Candidato.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return eleicao.getCargo();
+        
+        
+    }
+    
+    
 
     public Partido getPartido() {
         return partido;
@@ -53,14 +82,15 @@ public class Candidato {
         this.nomeCandidato = nomeCandidato;
     }
 
-    public Eleicao getEleicao() {
-        return eleicao;
+    public int getIdEleicao() {
+        return idEleicao;
     }
 
-    public void setEleicao(Eleicao eleicao) {
-        this.eleicao = eleicao;
+    public void setIdEleicao(int idEleicao) {
+        this.idEleicao = idEleicao;
     }
-    
+
+
     
     
     

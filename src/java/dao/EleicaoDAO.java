@@ -19,12 +19,11 @@ import model.Voto;
  *
  * @author Emm
  */
-public class EleicaoDAO extends ConexaoDAO {
+public class EleicaoDAO  {
 
-    public List<Eleicao> listarEleicoes() throws SQLException {
+    public List<Eleicao> listarEleicoes(Connection conn) throws SQLException {
 
         List<Eleicao> listaEleicoes = new ArrayList<Eleicao>();
-        Connection conn = this.criaConexao();
         Statement stmt = null;
         String sql = "SELECT * FROM tb_eleicao";
         ResultSet rs = null;
@@ -39,9 +38,9 @@ public class EleicaoDAO extends ConexaoDAO {
 
                 eleicao.setCargo(rs.getString("cargo"));
                 eleicao.setId_eleicao(rs.getInt("id_eleicao"));
-                eleicao.setListaCandidatos(this.listaCandidatosByEleicao(eleicao.getId_eleicao()));
+                eleicao.setListaCandidatos(this.listaCandidatosByEleicao(conn, eleicao.getId_eleicao()));
                 eleicao.setUnidadeFederacao("unidade_federacao");
-                eleicao.setVotos(this.listarVotosByEleicao(eleicao.getId_eleicao()));
+                eleicao.setVotos(this.listarVotosByEleicao(conn, eleicao.getId_eleicao()));
 
                 listaEleicoes.add(eleicao);
             }
@@ -53,7 +52,6 @@ public class EleicaoDAO extends ConexaoDAO {
 
             stmt.close();
             rs.close();
-            this.fecharConexao(conn);
 
         }
 
@@ -62,29 +60,29 @@ public class EleicaoDAO extends ConexaoDAO {
 
     
     
-    private List<Candidato> listaCandidatosByEleicao(int idEleicao) throws SQLException {
+    public List<Candidato> listaCandidatosByEleicao(Connection conn, int idEleicao) throws SQLException {
 
-        String sql = "SELECT c.* FROM tb_candidato c \n"
+        String sql = "SELECT * FROM tb_candidato c  "
                 + "WHERE id_eleicao = " + idEleicao;
 
         CandidatoDAO candidatoDAO = new CandidatoDAO();
 
-        return candidatoDAO.listarCandidatos(sql);
+        return candidatoDAO.listarCandidatos(conn, sql);
 
     }
 
-    private List<Voto> listarVotosByEleicao(int idEleicao) throws SQLException {
+    public List<Voto> listarVotosByEleicao(Connection conn, int idEleicao) throws SQLException {
 
         String sql = "SELECT * FROM tb_voto WHERE id_eleicao = " + idEleicao;
         VotoDAO votoDAO = new VotoDAO();
 
-        return votoDAO.listarVotos(sql);
+        return votoDAO.listarVotos(conn, sql);
 
     }
 
-    public Eleicao buscaById(int idEleicao) throws SQLException {
+    public Eleicao buscaById(Connection conn, int idEleicao) throws SQLException {
     
-        Connection conn = this.criaConexao();
+
         Statement stmt = null;
         String sql = "SELECT * FROM tb_eleicao WHERE id_eleicao = "+idEleicao;
         ResultSet rs = null;
@@ -100,9 +98,9 @@ public class EleicaoDAO extends ConexaoDAO {
 
                 eleicao.setCargo(rs.getString("cargo"));
                 eleicao.setId_eleicao(rs.getInt("id_eleicao"));
-                eleicao.setListaCandidatos(this.listaCandidatosByEleicao(eleicao.getId_eleicao()));
+                eleicao.setListaCandidatos(this.listaCandidatosByEleicao(conn, eleicao.getId_eleicao()));
                 eleicao.setUnidadeFederacao("unidade_federacao");
-                eleicao.setVotos(this.listarVotosByEleicao(eleicao.getId_eleicao()));
+                eleicao.setVotos(this.listarVotosByEleicao(conn, eleicao.getId_eleicao()));
 
             }
 
@@ -113,7 +111,7 @@ public class EleicaoDAO extends ConexaoDAO {
 
             stmt.close();
             rs.close();
-            this.fecharConexao(conn);
+
         }
 
         return eleicao;

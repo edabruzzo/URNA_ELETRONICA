@@ -17,6 +17,7 @@ public class Util {
 
     public static void main(String[] args) {
 
+        
         Util.criarInfra();
 //        System.out.println(System.getProperty("user.dir"));
     }

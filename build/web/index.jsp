@@ -52,8 +52,6 @@ and open the template in the editor.
                 |
                 <a href="${pageContext.request.contextPath}/eleicoes">Eleicoes</a>
                 |
-                <a href="${pageContext.request.contextPath}/concorrer">Concorrer a uma eleicao</a>
-                |
                 <a href="index.jsp">Home</a>
 
             </h3>

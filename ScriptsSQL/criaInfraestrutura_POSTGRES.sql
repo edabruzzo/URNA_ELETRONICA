@@ -28,8 +28,8 @@ CREATE TABLE IF NOT EXISTS tb_eleitor(
 	id_eleitor SERIAL PRIMARY KEY,
 	nome VARCHAR(255) NOT NULL,
 	idade INT NOT NULL,
-	titulo_eleitor int not null,
-	RG INT NOT NULL
+	titulo_eleitor int ,
+	RG INT NOT NULL UNIQUE
 
 
 );
@@ -155,6 +155,46 @@ INSERT INTO tb_partido(
 
 ) values('PARTIDO DO FOLCLORE', 95, 'PFolc');
 
+
+
+INSERT INTO tb_candidato( 
+	id_partido,
+	nome_candidato,
+        numero_candidato,
+        id_eleicao
+	)values
+(
+(select id_partido from tb_partido where numero_partido = 95),
+'BOZO BUNDA SUJA',
+1,
+1);
+
+
+INSERT INTO tb_candidato( 
+	id_partido,
+	nome_candidato,
+        numero_candidato,
+        id_eleicao
+	)values
+(
+(select id_partido from tb_partido where numero_partido = 95),
+'LULA ZUEIRO',
+2,
+1);
+
+
+
+INSERT INTO tb_candidato( 
+	id_partido,
+	nome_candidato,
+        numero_candidato,
+        id_eleicao
+	)values
+(
+(select id_partido from tb_partido where numero_partido = 95),
+'CIRO SEM NOÇÃO',
+3,
+1);
 
 
 INSERT INTO tb_candidato( 
@@ -291,6 +331,7 @@ INSERT INTO tb_candidato(
         numero_candidato,
         id_eleicao
 	)values
+(
 (select id_partido from tb_partido where numero_partido = 93),
 'Cozinheira',
 9304,3);
@@ -377,7 +418,8 @@ INSERT INTO tb_candidato(
 (
 (select id_partido from tb_partido where numero_partido = 95),
 'Negrinho do Pastoreio',
-9503);
+9503,
+3);
 
 INSERT INTO tb_candidato( 
 	id_partido,
@@ -494,7 +536,7 @@ INSERT INTO tb_candidato(
 (
 (select id_partido from tb_partido where numero_partido = 93),
 'Motorista',
-93002 
+93002, 
 4);
 
 
@@ -632,13 +674,13 @@ INSERT INTO tb_voto (
 INSERT INTO tb_voto (
 	id_candidato,
         id_eleitor,
-        id_eleicao)values(33, 2, 4);
+        id_eleicao)values(30, 2, 4);
 
 
 INSERT INTO tb_voto (
 	id_candidato,
         id_eleitor,
-        id_eleicao)values(34, 3, 4);
+        id_eleicao)values(30, 3, 4);
 
 
 INSERT INTO tb_voto (

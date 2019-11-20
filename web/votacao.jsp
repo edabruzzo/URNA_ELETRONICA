@@ -36,8 +36,8 @@
 
                     <div class="mb-2">
 
-
-                        <form id="form-voto" method="post" action="">
+                        <form id="form-voto" method="post" 
+                              action="${pageContext.servletContext.contextPath}/votacao">
 
                             <div class="form-group">
                                 <label for="exemploIdentificador">Digite seu identificador abaixo.</label>
@@ -50,9 +50,6 @@
                                 <select name="idEleicao">
                                     <c:forEach items="${listaEleicoes}" var="eleicao">
                                         <option value="${eleicao.id_eleicao}"
-                                                
-
-                                                
                                                 >${eleicao.cargo} 
                                         </option>
                                     </c:forEach>
@@ -60,7 +57,9 @@
                             </div>
                             <div class="form-group">
                                 <label for="exemploVoto">Abaixo está o número de seu candidato.</label>
-                                <input id="painel" name="painel" class="form-control w-100" type="title" placeholder="Número de seu candidato"
+                                <input id="painel" name="painel" 
+                                       class="form-control w-100" type="title" 
+                                       placeholder="Número de seu candidato"
                                        value=""
                                        readonly/>
                                 <small id="painel-help" class="form-text text-muted">Utilize os botões abaixo para realizar seu
@@ -94,21 +93,29 @@
                         </tr>
                         <tr>
                             <td><input type="button" class="btn btn-dark w-100" value="BRANCO" onclick="branco()"/></td>
-                            <td><input type="button" class="btn btn-dark w-100" value="CORRIGIR" onclick="corrigir()"/></td>
-                            <td><input id="enviar-voto" type="button" class="btn btn-dark w-100" value="ACEITAR"
+                            <td><input id="enviar-voto" type="button" 
+                                       style="color: green"
+                                       class="btn btn-dark w-100" value="VOTAR"
                                        onclick="document.getElementById('form-voto').submit()"/></td>
+                            <td><input type="button" class="btn btn-dark w-100" style="color: orange"
+                                       value="CORRIGIR" onclick="corrigir()"/></td>
+
                         </tr>
                     </table>
                 </div>
 
                 <div class="col-8">
-                    <table class="table table-sm">
+                    <table id="tabelaCandidatos" class="table table-sm">
 
                         <thead class="thead-dark w-100">
                             <tr>
+                                
                                 <th scope="col">Nome Candidato</th>
                                 <th scope="col">Numero do Candidato</th>
+                                <th scope="col">Eleição</th>
                                 <th scope="col">Partido</th>
+                                <th scope="col">Imagem</th>
+
                             </tr>
                         </thead>
 
@@ -117,8 +124,12 @@
                             <tr>
                                 <td><c:out value="${candidato.nomeCandidato}"/></td>
                                 <td><c:out value="${candidato.numeroCandidato}"/></td>
+                                <td><c:out value="${candidato.eleicaoCandidato()}"/></td>
                                 <td><c:out value="${candidato.partido.nomeCompleto}"/></td>
-
+                                <td>
+                            
+                            <img src="<c:url value="./image/figuras/${candidato.numeroCandidato}.jpg"/>"
+                            </td>
                             </tr>
                         </c:forEach>
                     </table>
@@ -126,6 +137,7 @@
             </div>
         </div>
 
+                              <!--
         <div>
             <div>
                 <img id="lamina1" src="image/candidatos/91DF.jpg">
@@ -142,10 +154,12 @@
                 <img id="lamina5" src="image/candidatos/95DF.jpg">
             </div>
         </div>
-
+-->
         <script>
 
             let numero_voto = [];
+
+
 
             function dis(numero) {
                 if (numero_voto.length > 3 || numero_voto.includes('BRANCO'))
@@ -164,6 +178,9 @@
                 numero_voto = [];
                 painel.value = "";
             }
+            
+            
+        
 
         </script>
 

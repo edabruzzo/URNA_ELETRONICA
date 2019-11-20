@@ -17,11 +17,10 @@ import model.Partido;
  *
  * @author Emm
  */
-public class PartidoDAO extends ConexaoDAO{
+public class PartidoDAO{
 
-    Partido buscaById(int idPartido) throws SQLException {
+    Partido buscaById(Connection conn, int idPartido) throws SQLException {
      
-    Connection conn = this.criaConexao();
     Statement stmt = null;
     ResultSet rs = null;
     String sql = "SELECT * FROM tb_partido WHERE id_partido = "+idPartido;
@@ -49,7 +48,6 @@ public class PartidoDAO extends ConexaoDAO{
             
             stmt.close();
             rs.close();
-            this.fecharConexao(conn);
             
         }
         
