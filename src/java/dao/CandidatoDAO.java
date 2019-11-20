@@ -12,10 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Candidato;
-import model.Eleitor;
+import model.Eleicao;
 import model.Partido;
 
 /**
@@ -26,6 +24,7 @@ public class CandidatoDAO extends ConexaoDAO {
 
     PartidoDAO partidoDAO = new PartidoDAO();
     EleitorDAO eleitorDAO = new EleitorDAO();
+    EleicaoDAO eleicaoDAO = new EleicaoDAO();
 
     public boolean incluirCandidato(Candidato candidato) throws SQLException {
 
@@ -35,8 +34,10 @@ public class CandidatoDAO extends ConexaoDAO {
         String sql = "INSERT INTO tb_candidato( \n"
                 + "	id_partido,\n"
                 + "	nome_candidato,\n"
-                + "	numero_candidato)values\n"
+                + "	numero_candidato,"
+                + "id_eleicao)values\n"
                 + "(\n"
+                + "?,\n"
                 + "?,\n"
                 + "?,\n"
                 + "'?');\n";
@@ -48,6 +49,7 @@ public class CandidatoDAO extends ConexaoDAO {
             stm.setInt(1, candidato.getPartido().getId_partido());
             stm.setString(2, candidato.getNomeCandidato());
             stm.setInt(3, candidato.getNumeroCandidato());
+            stm.setInt(4, candidato.getEleicao().getId_eleicao());
             stm.executeUpdate();
             sucesso = true;
 
@@ -92,42 +94,6 @@ public class CandidatoDAO extends ConexaoDAO {
         return sucesso;
     }
 
-    public boolean atualizarCandidato(Candidato candidato) throws SQLException {
-
-        boolean sucesso = false;
-
-        Connection conn = this.criaConexao();
-        String sql = "UPDATE tb_candidato SET \n"
-                + "numero_candidato = ?, \n"
-                + "nome_candidato = ?, \n"
-                + "id_partido = ?, \n"
-                + "WHERE id_candidato = ?;";
-
-        PreparedStatement stm = null;
-        try {
-            stm = conn.prepareStatement(sql);
-
-            stm.setInt(4, candidato.getPartido().getId_partido());
-            stm.setInt(1, candidato.getNumeroCandidato());
-            stm.setString(2, candidato.getNomeCandidato());
-            stm.setInt(5, candidato.getIdCandidato());
-            stm.executeUpdate();
-            sucesso = true;
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();        //Logger.getLogger(CandidatoDAO.class.getName()).log(Level.SEVERE, null, ex);
-            return sucesso;
-
-        } finally {
-
-            stm.close();
-            this.fecharConexao(conn);
-
-        }
-
-        return sucesso;
-    }
-
     public List<Candidato> listarCandidatos(String sql) throws SQLException {
 
         Connection conn = this.criaConexao();
@@ -142,12 +108,14 @@ public class CandidatoDAO extends ConexaoDAO {
             int idCanditado = rs.getInt("id_candidato");
             int numeroCandidato = rs.getInt("numero_candidato");
             Partido partido = partidoDAO.buscaById(rs.getInt("id_partido"));
+            Eleicao eleicao = eleicaoDAO.buscaById(rs.getInt("id_eleicao"));
             String nomeCandidato = rs.getString("nome_candidato");
 
             candidato.setIdCandidato(idCanditado);
             candidato.setNumeroCandidato(numeroCandidato);
             candidato.setNomeCandidato(nomeCandidato);
             candidato.setPartido(partido);
+            candidato.setEleicao(eleicao);
 
             listaCandidatos.add(candidato);
         }
@@ -175,12 +143,14 @@ public class CandidatoDAO extends ConexaoDAO {
             int idCanditado = rs.getInt("id_candidato");
             int numeroCandidato = rs.getInt("numero_candidato");
             Partido partido = partidoDAO.buscaById(rs.getInt("id_partido"));
+            Eleicao eleicao = eleicaoDAO.buscaById(rs.getInt("id_eleicao"));
             String nomeCandidato = rs.getString("nome_candidato");
 
             candidato.setIdCandidato(idCanditado);
             candidato.setNumeroCandidato(numeroCandidato);
             candidato.setNomeCandidato(nomeCandidato);
             candidato.setPartido(partido);
+            candidato.setEleicao(eleicao);
 
             listaCandidatos.add(candidato);
         }
@@ -209,11 +179,13 @@ public class CandidatoDAO extends ConexaoDAO {
             int numeroCandidato = rs.getInt("numero_candidato");
             String nomeCandidato = rs.getString("nome_candidato");
             Partido partido = partidoDAO.buscaById(rs.getInt("id_partido"));
-            
+            Eleicao eleicao = eleicaoDAO.buscaById(rs.getInt("id_eleicao"));
+
             candidato.setIdCandidato(idCanditado);
             candidato.setNumeroCandidato(numeroCandidato);
             candidato.setNomeCandidato(nomeCandidato);
             candidato.setPartido(partido);
+            candidato.setEleicao(eleicao);
 
         }
 
@@ -226,23 +198,26 @@ public class CandidatoDAO extends ConexaoDAO {
     }
 
     Candidato buscarCandidatoByNumeroCandidato(int numeroCandidato) throws SQLException {
-    
+
         Connection conn = this.criaConexao();
-        String sql = "SELECT * FROM tb_candidato WHERE numero_candidato = "+numeroCandidato;
+        String sql = "SELECT * FROM tb_candidato WHERE numero_candidato = " + numeroCandidato;
         Statement stm = conn.createStatement();
         ResultSet rs = stm.executeQuery(sql);
         Candidato candidato = null;
 
         while (rs.next()) {
+
             candidato = new Candidato();
             int idCanditado = rs.getInt("id_candidato");
             String nomeCandidato = rs.getString("nome_candidato");
             Partido partido = partidoDAO.buscaById(rs.getInt("id_partido"));
+            Eleicao eleicao = eleicaoDAO.buscaById(rs.getInt("id_eleicao"));
             
             candidato.setIdCandidato(idCanditado);
             candidato.setNumeroCandidato(rs.getInt("numero_candidato"));
             candidato.setNomeCandidato(nomeCandidato);
             candidato.setPartido(partido);
+            candidato.setEleicao(eleicao);
 
         }
 
@@ -252,8 +227,6 @@ public class CandidatoDAO extends ConexaoDAO {
 
         return candidato;
 
-    
-    
     }
 
 }

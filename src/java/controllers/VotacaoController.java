@@ -77,6 +77,7 @@ public class VotacaoController extends HttpServlet {
         int idEleicao = Integer.parseInt(request.getParameter("idEleicao"));
         int numeroCandidato = Integer.parseInt(request.getParameter("painel"));
         String rgEleitor = null;
+        
         try{
 
            rgEleitor = request.getParameter("identificador");

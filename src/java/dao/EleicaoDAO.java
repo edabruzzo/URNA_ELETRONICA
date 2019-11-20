@@ -25,9 +25,9 @@ public class EleicaoDAO extends ConexaoDAO {
 
         List<Eleicao> listaEleicoes = new ArrayList<Eleicao>();
         Connection conn = this.criaConexao();
-        Statement stmt = conn.createStatement();
+        Statement stmt = null;
         String sql = "SELECT * FROM tb_eleicao";
-        ResultSet rs = stmt.executeQuery(sql);
+        ResultSet rs = null;
 
         try {
             stmt = conn.createStatement();
@@ -53,6 +53,7 @@ public class EleicaoDAO extends ConexaoDAO {
 
             stmt.close();
             rs.close();
+            this.fecharConexao(conn);
 
         }
 
@@ -63,8 +64,7 @@ public class EleicaoDAO extends ConexaoDAO {
     
     private List<Candidato> listaCandidatosByEleicao(int idEleicao) throws SQLException {
 
-        String sql = "SELECT c.* FROM tb_eleicao_candidato e\n"
-                + " INNER JOIN tb_candidato c ON c.id_candidato = e.id_candidato \n"
+        String sql = "SELECT c.* FROM tb_candidato c \n"
                 + "WHERE id_eleicao = " + idEleicao;
 
         CandidatoDAO candidatoDAO = new CandidatoDAO();
@@ -80,6 +80,45 @@ public class EleicaoDAO extends ConexaoDAO {
 
         return votoDAO.listarVotos(sql);
 
+    }
+
+    public Eleicao buscaById(int idEleicao) throws SQLException {
+    
+        Connection conn = this.criaConexao();
+        Statement stmt = null;
+        String sql = "SELECT * FROM tb_eleicao WHERE id_eleicao = "+idEleicao;
+        ResultSet rs = null;
+        Eleicao eleicao = null;
+        try {
+            
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+
+                eleicao = new Eleicao();
+
+                eleicao.setCargo(rs.getString("cargo"));
+                eleicao.setId_eleicao(rs.getInt("id_eleicao"));
+                eleicao.setListaCandidatos(this.listaCandidatosByEleicao(eleicao.getId_eleicao()));
+                eleicao.setUnidadeFederacao("unidade_federacao");
+                eleicao.setVotos(this.listarVotosByEleicao(eleicao.getId_eleicao()));
+
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();        //Logger.getLogger(CandidatoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        
+        } finally {
+
+            stmt.close();
+            rs.close();
+            this.fecharConexao(conn);
+        }
+
+        return eleicao;
+
+    
     }
 
 }

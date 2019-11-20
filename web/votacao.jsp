@@ -49,7 +49,12 @@
                                 <label >Selecione o tipo de eleição </label>
                                 <select name="idEleicao">
                                     <c:forEach items="${listaEleicoes}" var="eleicao">
-                                        <option value="${eleicao.id_eleicao}">${eleicao.cargo}</option>
+                                        <option value="${eleicao.id_eleicao}"
+                                                
+
+                                                
+                                                >${eleicao.cargo} 
+                                        </option>
                                     </c:forEach>
                                 </select>
                             </div>
