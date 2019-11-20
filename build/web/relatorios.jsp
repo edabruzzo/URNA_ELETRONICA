@@ -154,5 +154,37 @@
     });
 </script>
 
+
+
+
+
+    <div class="col-8">
+                    <table id="tabelaVotosPorCandidato" class="table table-sm">
+
+                        <thead class="thead-dark w-100">
+                            <tr>
+                                
+                                <th scope="col">Nome do Candidato</th>
+                                <th scope="col">Quantidade de votos</th>
+
+                            </tr>
+                        </thead>
+
+
+                        <c:forEach var="voto" items="${listaVotosPorCandidato}">
+                            <tr>
+                                <td><c:out value="${voto.key}"/></td>
+                                <td><c:out value="${voto.value}"/></td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
 </body>
 </html>

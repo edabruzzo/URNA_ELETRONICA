@@ -18,39 +18,40 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+        <link rel="stylesheet" href="./css/modal.css">
 
     </head>
 
     <body>
 
-        
-        
-            <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" href="${pageContext.request.contextPath}" tabindex="-1"
-                   aria-disabled="true">Home</a>
-            </li>
-            <li class="page-item disabled">
-                <a class="page-link" href="${pageContext.request.contextPath}/votacao">Votação</a>
-            </li>
-            <li class="page-item ">
-                <a class="page-link" href="${pageContext.request.contextPath}/relatorios">Relatórios</a>
-            </li>
-            <%--        <li class="page-item">--%>
-            <%--            <a class="page-link" href="${pageContext.request.contextPath}/criarInfra">Criar Infraestrutura</a>--%>
-            <%--        </li>--%>
-            <%--        <li class="page-item">--%>
-            <%--            <a class="page-link" href="${pageContext.request.contextPath}/criarInfra">Criar Infraestrutura</a>--%>
-            <%--        </li>--%>
-        </ul>
-    </nav>
-        
-        
-        
-        
-        
-        
+
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" href="${pageContext.request.contextPath}" tabindex="-1"
+                       aria-disabled="true">Home</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="${pageContext.request.contextPath}/votacao">Votação</a>
+                </li>
+                <li class="page-item ">
+                    <a class="page-link" href="${pageContext.request.contextPath}/relatorios">Relatórios</a>
+                </li>
+                <%--        <li class="page-item">--%>
+                <%--            <a class="page-link" href="${pageContext.request.contextPath}/criarInfra">Criar Infraestrutura</a>--%>
+                <%--        </li>--%>
+                <%--        <li class="page-item">--%>
+                <%--            <a class="page-link" href="${pageContext.request.contextPath}/criarInfra">Criar Infraestrutura</a>--%>
+                <%--        </li>--%>
+            </ul>
+        </nav>
+
+
+
+
+
+
         <div class="container text-center">
 
             <h1 class="text-center">SIMULADOR URNA ELETRONICA</h1>
@@ -121,10 +122,10 @@
                         </tr>
                         <tr>
                             <td><input type="button" class="btn btn-dark w-100" value="BRANCO" onclick="branco()"/></td>
-                            <td><input id="enviar-voto" type="button" 
+                            <td><input id="myBtn" type="button" 
                                        style="color: green"
                                        class="btn btn-dark w-100" value="VOTAR"
-                                       onclick="document.getElementById('form-voto').submit()"/></td>
+                                       /></td>
                             <td><input type="button" class="btn btn-dark w-100" style="color: orange"
                                        value="CORRIGIR" onclick="corrigir()"/></td>
 
@@ -137,7 +138,7 @@
 
                         <thead class="thead-dark w-100">
                             <tr>
-                                
+
                                 <th scope="col">Nome Candidato</th>
                                 <th scope="col">Numero do Candidato</th>
                                 <th scope="col">Eleição</th>
@@ -155,9 +156,9 @@
                                 <td><c:out value="${candidato.eleicaoCandidato()}"/></td>
                                 <td><c:out value="${candidato.partido.nomeCompleto}"/></td>
                                 <td>
-                            
-                            <img src="<c:url value="./image/figuras/${candidato.numeroCandidato}.jpg"/>"
-                            </td>
+
+                                    <img src="<c:url value="./image/figuras/${candidato.numeroCandidato}.jpg"/>"
+                                </td>
                             </tr>
                         </c:forEach>
                     </table>
@@ -165,27 +166,56 @@
             </div>
         </div>
 
-                              <!--
-        <div>
-            <div>
-                <img id="lamina1" src="image/candidatos/91DF.jpg">
+        <!--
+<div>
+<div>
+<img id="lamina1" src="image/candidatos/91DF.jpg">
+</div>
+<div class="slick-slide" style="width: 650px;">
+<img id="lamina2" src="image/candidatos/92DF.jpg">
+</div>
+<div class="slick-slide" style="width: 650px;">
+<img id="lamina3" src="image/candidatos/93DF.jpg">
+</div>
+<div class="slick-slide" style="width: 650px;">
+<img id="lamina4" src="image/candidatos/94DF.jpg">
+</div><div class="slick-slide" style="width: 650px;">
+<img id="lamina5" src="image/candidatos/95DF.jpg">
+</div>
+</div>
+        -->
+
+
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div>
+                    <!-- Modal Content (The Image) -->
+                    <img class="modal-content" id="img01">
+                </div>
+                <div>
+                    <button id="votar"
+                            style="color: green"
+                            class="btn btn-dark w-100"
+                            onclick="document.getElementById('form-voto').submit()">
+                        CONFIRMAR VOTO
+                    </button>
+                </div>
             </div>
-            <div class="slick-slide" style="width: 650px;">
-                <img id="lamina2" src="image/candidatos/92DF.jpg">
-            </div>
-            <div class="slick-slide" style="width: 650px;">
-                <img id="lamina3" src="image/candidatos/93DF.jpg">
-            </div>
-            <div class="slick-slide" style="width: 650px;">
-                <img id="lamina4" src="image/candidatos/94DF.jpg">
-            </div><div class="slick-slide" style="width: 650px;">
-                <img id="lamina5" src="image/candidatos/95DF.jpg">
-            </div>
+
         </div>
--->
+
+
+
         <script>
 
             let numero_voto = [];
+
+            let painel = document.getElementById("painel");
 
 
 
@@ -206,10 +236,29 @@
                 numero_voto = [];
                 painel.value = "";
             }
-            
-            
-        
 
+
+
+            // https://www.w3schools.com/howto/howto_css_modal_images.asp
+            var modal = document.getElementById("myModal");
+            // Get the button that opens the modal
+            var btn = document.getElementById("myBtn");
+            var modalImg = document.getElementById("img01");
+            var captionText = document.getElementById("caption");
+
+            btn.onclick = function () {
+                modal.style.display = "block";
+                modalImg.src = "./image/figuras/" + painel.value + ".jpg";
+                captionText.innerHTML = "Número do candidato: " + painel.value;
+            }
+
+// Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
         </script>
 
 
