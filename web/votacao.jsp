@@ -23,6 +23,37 @@
 
     <body>
 
+        
+        
+            <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" href="${pageContext.request.contextPath}" tabindex="-1"
+                   aria-disabled="true">Home</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="${pageContext.request.contextPath}/criarInfra">Criar Infraestrutura</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="${pageContext.request.contextPath}/votacao">Votação</a>
+            </li>
+            <li class="page-item disabled">
+                <a class="page-link" href="${pageContext.request.contextPath}/relatorios">Relatórios</a>
+            </li>
+            <%--        <li class="page-item">--%>
+            <%--            <a class="page-link" href="${pageContext.request.contextPath}/criarInfra">Criar Infraestrutura</a>--%>
+            <%--        </li>--%>
+            <%--        <li class="page-item">--%>
+            <%--            <a class="page-link" href="${pageContext.request.contextPath}/criarInfra">Criar Infraestrutura</a>--%>
+            <%--        </li>--%>
+        </ul>
+    </nav>
+        
+        
+        
+        
+        
+        
         <div class="container text-center">
 
             <h1 class="text-center">SIMULADOR URNA ELETRONICA</h1>

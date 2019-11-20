@@ -1,5 +1,4 @@
 
-DROP TABLE IF EXISTS tb_eleicao_candidato;
 DROP TABLE IF EXISTS tb_voto;
 DROP TABLE IF EXISTS tb_candidato;
 DROP TABLE IF EXISTS tb_eleitor;
