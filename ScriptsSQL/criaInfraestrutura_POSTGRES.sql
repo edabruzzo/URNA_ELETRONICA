@@ -452,7 +452,7 @@ INSERT INTO tb_voto (
 INSERT INTO tb_voto (
 	id_candidato,
         id_eleitor,
-        id_eleicao)values(17, 5, 3);
+        id_eleicao)values(null, 5, 3);
 
 
 --SELECT * FROM tb_candidato;
