@@ -274,4 +274,40 @@ public class CandidatoDAO {
 
     }
 
+    public boolean verificaCandidatoEleicao(int idEleicao, int numeroCandidato) throws SQLException {
+    
+        boolean coincide = false;
+        Connection conn = conexaoDAO.criaConexao();
+        String sql = "SELECT true as coincide FROM tb_candidato WHERE numero_candidato = "
+                + "\n" + numeroCandidato + " AND id_eleicao = "+idEleicao;
+        Statement stm = null;
+        ResultSet rs = null;
+
+        try {
+            stm = conn.createStatement();
+
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
+
+                coincide = rs.getBoolean("coincide");
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CandidatoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            
+            stm.close();
+            rs.close();
+            conexaoDAO.fecharConexao(conn);
+
+        }
+
+        return coincide;
+
+    
+    
+    }
+
 }

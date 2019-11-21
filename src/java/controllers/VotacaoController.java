@@ -6,12 +6,10 @@
 package controllers;
 
 import dao.CandidatoDAO;
-import dao.ConexaoDAO;
 import dao.EleicaoDAO;
 import dao.EleitorDAO;
 import dao.VotoDAO;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -41,7 +39,9 @@ public class VotacaoController extends HttpServlet {
     EleitorDAO eleitorDAO = new EleitorDAO();
     String stringErro = null;
     String stringSucesso = null;
-
+    List<Candidato> listaCandidatos = null;
+    List<Eleicao> listaEleicoes = null;
+    
 
     /*
     @Override
@@ -59,30 +59,33 @@ public class VotacaoController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<Candidato> listaCandidatos = null;
-        List<Eleicao> listaEleicoes = null;
+        List<Candidato> listaCandidatos = (List<Candidato>) request.getAttribute("listaCandidatos");
+        List<Eleicao> listaEleicoes = (List<Eleicao>) request.getAttribute("listaEleicoes");
 
+        if (listaCandidatos == null && listaEleicoes == null) {
 
-        try {
-            listaEleicoes = eleicaoDAO.listarEleicoes();
-        } catch (SQLException ex) {
-            Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                this.listaEleicoes = eleicaoDAO.listarEleicoes();
+            } catch (SQLException ex) {
+                Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                String idEleicaoSelecionada = request.getParameter("id_eleicao_selecionado");
+                if (idEleicaoSelecionada != null) {
+                    this.listaCandidatos = eleicaoDAO.listaCandidatosByEleicao(Integer.parseInt(idEleicaoSelecionada));
+                } else {
+                    this.listaCandidatos = candidatoDAO.listarTodosCandidatos();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
 
-        try {    
-            String idEleicaoSelecionada = request.getParameter("id_eleicao_selecionado");
-            if(idEleicaoSelecionada != null)
-                listaCandidatos = eleicaoDAO.listaCandidatosByEleicao(Integer.parseInt(idEleicaoSelecionada));
-            else
-                listaCandidatos = candidatoDAO.listarTodosCandidatos();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    
-
-        request.setAttribute("listaCandidatos", listaCandidatos);
-        request.setAttribute("listaEleicoes", listaEleicoes);
+        request.setAttribute("listaCandidatos", this.listaCandidatos);
+        request.setAttribute("listaEleicoes", this.listaEleicoes);
         request.setAttribute("stringErro", stringErro);
         request.setAttribute("stringSucesso", stringSucesso);
 
@@ -102,11 +105,11 @@ public class VotacaoController extends HttpServlet {
 
         int numeroCandidato = 0;
 
-        if(!candidato.isEmpty())
-                numeroCandidato = Integer.parseInt(candidato);
+        if (!candidato.isEmpty()) {
+            numeroCandidato = Integer.parseInt(candidato);
+        }
 
         String rgEleitor = null;
-
 
         try {
 
@@ -163,20 +166,52 @@ public class VotacaoController extends HttpServlet {
                 stringSucesso = null;
                 this.doGet(request, response);
                 Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
+                return;
             }
 
         } else {
 
             boolean sucesso = false;
+            boolean coincide = true;
+
             try {
-                
-                if(numeroCandidato != 0)
-                    sucesso = votoDAO.inserirVoto(eleitor.getId_Eleitor(), idEleicao, numeroCandidato);
-                else if (numeroCandidato ==0)
-                    sucesso = votoDAO.inserirVotoNulo(eleitor.getId_Eleitor(), idEleicao);
-                
+                if (numeroCandidato != 0) {
+                    coincide = candidatoDAO.verificaCandidatoEleicao(idEleicao, numeroCandidato);
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            if (!coincide) {
+                try {
+                    throw new Exception();
+                } catch (Exception ex) {
+                    stringErro = "O candidato não está registrado para esta eleição";
+                    stringSucesso = null;
+                    this.doGet(request, response);
+                    Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
+                    return;
+                }
+            } else {
+
+                if (numeroCandidato != 0) {
+                    try {
+
+                        sucesso = votoDAO.inserirVoto(eleitor.getId_Eleitor(), idEleicao, numeroCandidato);
+
+                    } catch (SQLException ex) {
+                        Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else if (numeroCandidato == 0) {
+                    try {
+
+                        sucesso = votoDAO.inserirVotoNulo(eleitor.getId_Eleitor(), idEleicao);
+
+                    } catch (SQLException ex) {
+                        Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
             }
 
             if (sucesso) {
@@ -192,8 +227,6 @@ public class VotacaoController extends HttpServlet {
             }
 
         }
-
-        
 
     }
 

@@ -38,7 +38,10 @@
                 <li class="page-item ">
                     <a class="page-link" href="${pageContext.request.contextPath}/relatorios">Relatórios</a>
                 </li>
-                <%--        <li class="page-item">--%>
+                
+		<li><div class="start-screen-recording-mid recording-style-black"><div><div class="rec-dot"></div><span>Record Screen</span></div></div><script src="https://api.apowersoft.com/screen-recorder?lang=en" defer></script></li>
+		
+		<%--        <li class="page-item">--%>
                 <%--            <a class="page-link" href="${pageContext.request.contextPath}/criarInfra">Criar Infraestrutura</a>--%>
                 <%--        </li>--%>
                 <%--        <li class="page-item">--%>
