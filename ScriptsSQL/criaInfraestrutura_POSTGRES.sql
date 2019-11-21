@@ -779,11 +779,3 @@ INSERT INTO tb_voto (
 
 --SELECT * FROM tb_candidato;
 --select * from tb_voto;
-
-SELECT COUNT(*) AS Votos_Totais, 
-                C.nome_candidato AS Nome_Candidato 
-                FROM public.tb_voto AS V 
-                    INNER JOIN tb_candidato AS C 
-                        ON V.id_candidato = C.id_candidato
-                GROUP BY C.nome_candidato
-                ORDER BY COUNT(*)

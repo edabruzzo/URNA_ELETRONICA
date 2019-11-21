@@ -59,8 +59,8 @@ public class VotacaoController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        List<Candidato> listaCandidatos = (List<Candidato>) request.getAttribute("listaCandidatos");
-        List<Eleicao> listaEleicoes = (List<Eleicao>) request.getAttribute("listaEleicoes");
+        List<Candidato> listaCandidatos = (List<Candidato>) request.getSession().getAttribute("listaCandidatos");
+        List<Eleicao> listaEleicoes = (List<Eleicao>) request.getSession().getAttribute("listaEleicoes");
 
         if (listaCandidatos == null && listaEleicoes == null) {
 
@@ -84,8 +84,8 @@ public class VotacaoController extends HttpServlet {
 
         }
 
-        request.setAttribute("listaCandidatos", this.listaCandidatos);
-        request.setAttribute("listaEleicoes", this.listaEleicoes);
+        request.getSession().setAttribute("listaCandidatos", this.listaCandidatos);
+        request.getSession().setAttribute("listaEleicoes", this.listaEleicoes);
         request.setAttribute("stringErro", stringErro);
         request.setAttribute("stringSucesso", stringSucesso);
 
