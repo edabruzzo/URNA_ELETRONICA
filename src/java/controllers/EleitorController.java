@@ -13,7 +13,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -71,7 +70,6 @@ public class EleitorController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     
-    ConexaoDAO conexaoDAO = new ConexaoDAO();
     EleitorDAO eleitorDAO = new EleitorDAO();
     
     @Override
@@ -79,7 +77,6 @@ public class EleitorController extends HttpServlet {
             throws ServletException, IOException {
         
     
-            Connection conn = conexaoDAO.criaConexao();
             
             Eleitor eleitor = new Eleitor();
             String mensagem = "";
@@ -88,12 +85,13 @@ public class EleitorController extends HttpServlet {
             int idade = Integer.parseInt(request.getParameter("idade"));
             int rg = Integer.parseInt(request.getParameter("rg"));
             
+            
             eleitor.setNome(nome);
             eleitor.setIdade(idade);
             eleitor.setRG(rg);
-            
+            eleitor.setTituloEleitor(0);
         try {
-            mensagem = eleitorDAO.criarEleitor(conn, eleitor);
+            mensagem = eleitorDAO.criarEleitor(eleitor);
             this.mensagem = mensagem;
             this.corMensagem = "green";
             
@@ -106,9 +104,7 @@ public class EleitorController extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(EleitorController.class.getName()).log(Level.SEVERE, null, ex);
                         
-            conexaoDAO.fecharConexao(conn);
-         
-    
+            
     }
         
     }

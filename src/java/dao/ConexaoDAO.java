@@ -52,6 +52,10 @@ public class ConexaoDAO {
             conn = DriverManager.getConnection(URL, USER, PASSWORD);
 
         } catch (SQLException ex) {
+            if(ex.getMessage().contains("too many clients already")){
+                
+                
+            }
             ex.printStackTrace();        //Logger.getLogger(CandidatoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 

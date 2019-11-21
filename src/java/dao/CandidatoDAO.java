@@ -27,10 +27,13 @@ public class CandidatoDAO {
     PartidoDAO partidoDAO = new PartidoDAO();
     EleitorDAO eleitorDAO = new EleitorDAO();
     EleicaoDAO eleicaoDAO = new EleicaoDAO();
+    ConexaoDAO conexaoDAO = new ConexaoDAO();
 
-    public boolean incluirCandidato(Connection conn, Candidato candidato) throws SQLException {
+    public boolean incluirCandidato(Candidato candidato) throws SQLException {
 
         boolean sucesso = false;
+
+        Connection conn = conexaoDAO.criaConexao();
 
         String sql = "INSERT INTO tb_candidato( \n"
                 + "	id_partido,\n"
@@ -60,16 +63,19 @@ public class CandidatoDAO {
             //Logger.getLogger(CandidatoDAO.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
-            stm.close();
 
+            stm.close();
+            conexaoDAO.fecharConexao(conn);
         }
 
         return sucesso;
     }
 
-    public boolean removerCandidato(Connection conn, int idCandidato) throws SQLException {
+    public boolean removerCandidato(int idCandidato) throws SQLException {
 
         boolean sucesso = false;
+
+        Connection conn = conexaoDAO.criaConexao();
 
         String sql = "DELETE FROM tb_candidato WHERE id_candidato = ?";
 
@@ -86,17 +92,20 @@ public class CandidatoDAO {
 
         } finally {
             stm.close();
+            conexaoDAO.fecharConexao(conn);
 
         }
 
         return sucesso;
     }
 
-    public List<Candidato> listarCandidatos(Connection conn, String sql) throws SQLException {
+    public List<Candidato> listarCandidatos(String sql) throws SQLException {
 
+        Connection conn = conexaoDAO.criaConexao();
         Statement stm = null;
         ResultSet rs = null;
         List<Candidato> listaCandidatos = new ArrayList<Candidato>();
+
         try {
             stm = conn.createStatement();
             rs = stm.executeQuery(sql);
@@ -106,10 +115,9 @@ public class CandidatoDAO {
                 Candidato candidato = new Candidato();
                 int idCanditado = rs.getInt("id_candidato");
                 int numeroCandidato = rs.getInt("numero_candidato");
-                Partido partido = partidoDAO.buscaById(conn, rs.getInt("id_partido"));
+                Partido partido = partidoDAO.buscaById(rs.getInt("id_partido"));
                 String nomeCandidato = rs.getString("nome_candidato");
                 int idEleicao = rs.getInt("id_eleicao");
-                
 
                 candidato.setIdCandidato(idCanditado);
                 candidato.setNumeroCandidato(numeroCandidato);
@@ -126,6 +134,7 @@ public class CandidatoDAO {
 
             stm.close();
             rs.close();
+            conexaoDAO.fecharConexao(conn);
 
         }
 
@@ -133,23 +142,27 @@ public class CandidatoDAO {
 
     }
 
-    public List<Candidato> listarTodosCandidatos(Connection conn) throws SQLException {
+    public List<Candidato> listarTodosCandidatos() throws SQLException {
 
-        Statement stm = conn.createStatement();
-        String sql = "SELECT * FROM tb_candidato ORDER BY numero_candidato";
-        ResultSet rs = stm.executeQuery(sql);
+        Connection conn = conexaoDAO.criaConexao();
 
+        Statement stm = null;
+        ResultSet rs = null;
         List<Candidato> listaCandidatos = new ArrayList<Candidato>();
 
-        while (rs.next()) {
+        try {
+            stm = conn.createStatement();
+            String sql = "SELECT * FROM tb_candidato ORDER BY numero_candidato";
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
 
                 Candidato candidato = new Candidato();
                 int idCanditado = rs.getInt("id_candidato");
                 int numeroCandidato = rs.getInt("numero_candidato");
-                Partido partido = partidoDAO.buscaById(conn, rs.getInt("id_partido"));
+                Partido partido = partidoDAO.buscaById(rs.getInt("id_partido"));
                 String nomeCandidato = rs.getString("nome_candidato");
                 int idEleicao = rs.getInt("id_eleicao");
-                
 
                 candidato.setIdCandidato(idCanditado);
                 candidato.setNumeroCandidato(numeroCandidato);
@@ -157,34 +170,45 @@ public class CandidatoDAO {
                 candidato.setPartido(partido);
                 candidato.setIdEleicao(idEleicao);
 
-            listaCandidatos.add(candidato);
-        }
+                listaCandidatos.add(candidato);
+            }
 
-        stm.close();
-        rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CandidatoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+            stm.close();
+            rs.close();
+            conexaoDAO.fecharConexao(conn);
+
+        }
 
         return listaCandidatos;
 
     }
 
-    public Candidato buscarCandidato(Connection conn, int idCandidato) throws SQLException {
+    public Candidato buscarCandidato(int idCandidato) throws SQLException {
 
+        Connection conn = conexaoDAO.criaConexao();
         String sql = "SELECT * FROM tb_candidato WHERE id_candidato = ?";
-        PreparedStatement stm = conn.prepareStatement(sql);
-        stm.setInt(1, idCandidato);
-
-        ResultSet rs = stm.executeQuery(sql);
+        PreparedStatement stm = null;
+        ResultSet rs = null;
         Candidato candidato = null;
 
-        while (rs.next()) {
+        try {
+            stm = conn.prepareStatement(sql);
+
+            stm.setInt(1, idCandidato);
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
 
                 candidato = new Candidato();
                 int idCanditado = rs.getInt("id_candidato");
                 int numeroCandidato = rs.getInt("numero_candidato");
-                Partido partido = partidoDAO.buscaById(conn, rs.getInt("id_partido"));
+                Partido partido = partidoDAO.buscaById(rs.getInt("id_partido"));
                 String nomeCandidato = rs.getString("nome_candidato");
                 int idEleicao = rs.getInt("id_eleicao");
-                
 
                 candidato.setIdCandidato(idCanditado);
                 candidato.setNumeroCandidato(numeroCandidato);
@@ -192,30 +216,41 @@ public class CandidatoDAO {
                 candidato.setPartido(partido);
                 candidato.setIdEleicao(idEleicao);
 
-        }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CandidatoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
 
-        stm.close();
-        rs.close();
+            stm.close();
+            rs.close();
+            conexaoDAO.fecharConexao(conn);
+
+        }
 
         return candidato;
 
     }
 
-    Candidato buscarCandidatoByNumeroCandidato(Connection conn, int numeroCandidato) throws SQLException {
+    Candidato buscarCandidatoByNumeroCandidato(int numeroCandidato) throws SQLException {
 
+        Connection conn = conexaoDAO.criaConexao();
         String sql = "SELECT * FROM tb_candidato WHERE numero_candidato = " + numeroCandidato;
-        Statement stm = conn.createStatement();
-        ResultSet rs = stm.executeQuery(sql);
+        Statement stm = null;
+        ResultSet rs = null;
         Candidato candidato = null;
 
-        while (rs.next()) {
+        try {
+            stm = conn.createStatement();
+
+            rs = stm.executeQuery(sql);
+
+            while (rs.next()) {
 
                 candidato = new Candidato();
                 int idCanditado = rs.getInt("id_candidato");
-                Partido partido = partidoDAO.buscaById(conn, rs.getInt("id_partido"));
+                Partido partido = partidoDAO.buscaById(rs.getInt("id_partido"));
                 String nomeCandidato = rs.getString("nome_candidato");
                 int idEleicao = rs.getInt("id_eleicao");
-                
 
                 candidato.setIdCandidato(idCanditado);
                 candidato.setNumeroCandidato(numeroCandidato);
@@ -223,10 +258,17 @@ public class CandidatoDAO {
                 candidato.setPartido(partido);
                 candidato.setIdEleicao(idEleicao);
 
-        }
+            }
 
-        stm.close();
-        rs.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CandidatoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            
+            stm.close();
+            rs.close();
+            conexaoDAO.fecharConexao(conn);
+
+        }
 
         return candidato;
 

@@ -39,7 +39,6 @@ public class VotacaoController extends HttpServlet {
     CandidatoDAO candidatoDAO = new CandidatoDAO();
     EleicaoDAO eleicaoDAO = new EleicaoDAO();
     EleitorDAO eleitorDAO = new EleitorDAO();
-    ConexaoDAO conexaoDAO = new ConexaoDAO();
     String stringErro = null;
     String stringSucesso = null;
 
@@ -63,30 +62,24 @@ public class VotacaoController extends HttpServlet {
         List<Candidato> listaCandidatos = null;
         List<Eleicao> listaEleicoes = null;
 
-        Connection conn = conexaoDAO.criaConexao();
+
         try {
-            listaEleicoes = eleicaoDAO.listarEleicoes(conn);
+            listaEleicoes = eleicaoDAO.listarEleicoes();
         } catch (SQLException ex) {
             Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        try {
-
+        try {    
             String idEleicaoSelecionada = request.getParameter("id_eleicao_selecionado");
-
-            listaCandidatos = eleicaoDAO.listaCandidatosByEleicao(conn, Integer.parseInt(idEleicaoSelecionada));
-
-        } catch (Exception e) {
-
-            try {
-                listaCandidatos = candidatoDAO.listarTodosCandidatos(conn);
-            } catch (SQLException ex) {
-                Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            e.printStackTrace();
+            if(idEleicaoSelecionada != null)
+                listaCandidatos = eleicaoDAO.listaCandidatosByEleicao(Integer.parseInt(idEleicaoSelecionada));
+            else
+                listaCandidatos = candidatoDAO.listarTodosCandidatos();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        conexaoDAO.fecharConexao(conn);
+    
 
         request.setAttribute("listaCandidatos", listaCandidatos);
         request.setAttribute("listaEleicoes", listaEleicoes);
@@ -114,7 +107,6 @@ public class VotacaoController extends HttpServlet {
 
         String rgEleitor = null;
 
-        Connection conn = conexaoDAO.criaConexao();
 
         try {
 
@@ -130,13 +122,14 @@ public class VotacaoController extends HttpServlet {
         Eleitor eleitor = null;
         try {
 
-            eleitor = eleitorDAO.buscaEleitorByRG(conn, rgEleitor);
+            eleitor = eleitorDAO.buscaEleitorByRG(rgEleitor);
             if (eleitor == null) {
 
                 RequestDispatcher dispatcher = request.getServletContext()
                         .getRequestDispatcher("/eleitor.jsp");
 
                 dispatcher.forward(request, response);
+                return;
 
             }
         } catch (SQLException ex) {
@@ -151,7 +144,9 @@ public class VotacaoController extends HttpServlet {
         Voto voto = null;
 
         try {
-            voto = votoDAO.pesquisarVotoByIdEleicaoIdEleitor(conn, idEleicao, eleitor.getId_Eleitor());
+
+            voto = votoDAO.pesquisarVotoByIdEleicaoIdEleitor(idEleicao, eleitor.getId_Eleitor());
+
         } catch (SQLException ex) {
             Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -176,9 +171,9 @@ public class VotacaoController extends HttpServlet {
             try {
                 
                 if(numeroCandidato != 0)
-                    sucesso = votoDAO.inserirVoto(conn, eleitor.getId_Eleitor(), idEleicao, numeroCandidato);
+                    sucesso = votoDAO.inserirVoto(eleitor.getId_Eleitor(), idEleicao, numeroCandidato);
                 else if (numeroCandidato ==0)
-                    sucesso = votoDAO.inserirVotoNulo(conn, eleitor.getId_Eleitor(), idEleicao);
+                    sucesso = votoDAO.inserirVotoNulo(eleitor.getId_Eleitor(), idEleicao);
                 
             } catch (SQLException ex) {
                 Logger.getLogger(VotacaoController.class.getName()).log(Level.SEVERE, null, ex);
@@ -198,7 +193,7 @@ public class VotacaoController extends HttpServlet {
 
         }
 
-        conexaoDAO.fecharConexao(conn);
+        
 
     }
 

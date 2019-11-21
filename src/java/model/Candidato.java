@@ -30,11 +30,10 @@ public class Candidato {
     public String eleicaoCandidato(){
         
         EleicaoDAO eleicaoDAO = new EleicaoDAO();
-        Connection conn = new ConexaoDAO().criaConexao();
         Eleicao eleicao = new Eleicao();
         try {
         
-            eleicao = eleicaoDAO.buscaById(conn, this.getIdEleicao());
+            eleicao = eleicaoDAO.buscaById(this.getIdEleicao());
         
         } catch (SQLException ex) {
             Logger.getLogger(Candidato.class.getName()).log(Level.SEVERE, null, ex);

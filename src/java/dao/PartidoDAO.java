@@ -17,43 +17,44 @@ import model.Partido;
  *
  * @author Emm
  */
-public class PartidoDAO{
+public class PartidoDAO {
+    
+    ConexaoDAO conexaoDAO = new ConexaoDAO();
 
-    Partido buscaById(Connection conn, int idPartido) throws SQLException {
-     
-    Statement stmt = null;
-    ResultSet rs = null;
-    String sql = "SELECT * FROM tb_partido WHERE id_partido = "+idPartido;
-    Partido partido = new Partido();
+    Partido buscaById(int idPartido) throws SQLException {
+
+        Connection conn = conexaoDAO.criaConexao();
+        Statement stmt = null;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM tb_partido WHERE id_partido = " + idPartido;
+        Partido partido = new Partido();
         try {
-            
+
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
-            
-            while(rs.next()){
-                
+
+            while (rs.next()) {
+
                 partido.setId_partido(rs.getInt("id_partido"));
                 partido.setNumeroPartido(rs.getInt("numero_partido"));
                 partido.setNomeCompleto(rs.getString("nomeCompleto"));
                 partido.setSigla(rs.getString("sigla"));
-                
+
             }
-        
-        
-        
+
         } catch (SQLException ex) {
             ex.printStackTrace();
             Logger.getLogger(PartidoDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            
+        } finally {
+
             stmt.close();
             rs.close();
-            
+            conexaoDAO.fecharConexao(conn);
+
         }
-        
+
         return partido;
-    
-    
+
     }
-    
+
 }

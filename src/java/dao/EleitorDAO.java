@@ -19,11 +19,15 @@ import model.Eleitor;
  * @author Emm
  */
 public class EleitorDAO {
+    
+    
+    ConexaoDAO conexaoDAO = new ConexaoDAO();
 
-    Eleitor buscaByID(Connection conn, int idEleitor) throws SQLException {
+    Eleitor buscaByID(int idEleitor) throws SQLException {
 
         Eleitor eleitor = new Eleitor();
 
+        Connection conn = conexaoDAO.criaConexao();
         Statement stmt = null;
         ResultSet rs = null;
 
@@ -51,14 +55,16 @@ public class EleitorDAO {
 
             stmt.close();
             rs.close();
+            conexaoDAO.fecharConexao(conn);
         }
 
         return eleitor;
 
     }
 
-    public Eleitor buscaEleitorByRG(Connection conn, String rgEleitor) throws SQLException {
+    public Eleitor buscaEleitorByRG(String rgEleitor) throws SQLException {
 
+        Connection conn = conexaoDAO.criaConexao();
         Eleitor eleitor = null;
 
         Statement stmt = null;
@@ -89,17 +95,19 @@ public class EleitorDAO {
 
             stmt.close();
             rs.close();
+            conexaoDAO.fecharConexao(conn);
         }
 
         return eleitor;
 
     }
 
-    public String criarEleitor(Connection conn, Eleitor eleitor) throws SQLException {
+    public String criarEleitor(Eleitor eleitor) throws SQLException {
 
+        Connection conn = conexaoDAO.criaConexao();
         String mensagem = null;
-        String sql = "INSERT INTO tb_eleitor (nome, idade, RG) \n"
-                + "values(?, ?, ?);";
+        String sql = "INSERT INTO tb_eleitor (nome, idade, RG, titulo_eleitor) \n"
+                + "values(?, ?, ?, ?);";
 
         PreparedStatement stmt = null;
         try {
@@ -107,6 +115,7 @@ public class EleitorDAO {
             stmt.setString(1, eleitor.getNome());
             stmt.setInt(2, eleitor.getIdade());
             stmt.setInt(3, eleitor.getRG());
+            stmt.setInt(4, 0);
             stmt.execute();
 
             mensagem = "Eleitor inserido no banco com sucesso";
@@ -120,6 +129,7 @@ public class EleitorDAO {
             Logger.getLogger(EleitorDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             stmt.close();
+            conexaoDAO.fecharConexao(conn);
         }
         
         return mensagem;

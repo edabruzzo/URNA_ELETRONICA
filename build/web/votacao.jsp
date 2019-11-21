@@ -151,7 +151,7 @@
 
                         <c:forEach var="candidato" items="${listaCandidatos}">
                             <tr>
-                                <td><c:out value="${candidato.nomeCandidato}"/></td>
+                                <td><strong><c:out value="${candidato.nomeCandidato}"/></strong></td>
                                 <td><c:out value="${candidato.numeroCandidato}"/></td>
                                 <td><c:out value="${candidato.eleicaoCandidato()}"/></td>
                                 <td><c:out value="${candidato.partido.nomeCompleto}"/></td>
@@ -193,11 +193,13 @@
             <!-- Modal content -->
             <div class="modal-content">
                 <span class="close">&times;</span>
+              
+
                 <div>
                     <!-- Modal Content (The Image) -->
                     <img class="modal-content" id="img01">
                 </div>
-                <div>
+                  <div>
                     <button id="votar"
                             style="color: green"
                             class="btn btn-dark w-100"

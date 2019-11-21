@@ -24,9 +24,11 @@ import model.Voto;
 public class VotoDAO  {
     
     CandidatoDAO candidatoDAO = new CandidatoDAO();
+    ConexaoDAO conexaoDAO = new ConexaoDAO();
+    
+    List<Voto> listarVotos(String sql) throws SQLException {
 
-    List<Voto> listarVotos(Connection conn, String sql) throws SQLException {
-
+        Connection conn = conexaoDAO.criaConexao();
         List<Voto> listaVotos = new ArrayList<Voto>();
         Statement statement = null;
         ResultSet rs = null;
@@ -51,13 +53,15 @@ public class VotoDAO  {
         } finally {
             statement.close();
             rs.close();
+            conexaoDAO.fecharConexao(conn);
         }
         return listaVotos;
 
     }
 
-    List<Voto> listarTodosVotos(Connection conn) throws SQLException {
+    List<Voto> listarTodosVotos() throws SQLException {
 
+        Connection conn = conexaoDAO.criaConexao();
         List<Voto> listaVotos = new ArrayList<Voto>();
         Statement statement = null;
         ResultSet rs = null;
@@ -83,13 +87,16 @@ public class VotoDAO  {
         } finally {
             statement.close();
             rs.close();
+            conexaoDAO.fecharConexao(conn);
         }
         return listaVotos;
 
     }
 
-    public Voto pesquisarVotoByIdEleicaoIdEleitor(Connection conn, int idEleicao, int idEleitor) throws SQLException {
+    public Voto pesquisarVotoByIdEleicaoIdEleitor(int idEleicao, int idEleitor) throws SQLException {
 
+        
+        Connection conn = conexaoDAO.criaConexao();
         Statement statement = null;
         ResultSet rs = null;
         String sql = "SELECT * FROM tb_voto WHERE id_eleicao = " + idEleicao + " "
@@ -116,14 +123,17 @@ public class VotoDAO  {
         } finally {
             statement.close();
             rs.close();
+            conexaoDAO.fecharConexao(conn);
         }
         return voto;
 
     }
 
-    public boolean inserirVoto(Connection conn, int idEleitor, int idEleicao, int numeroCandidato) throws SQLException {
+    public boolean inserirVoto(int idEleitor, int idEleicao, int numeroCandidato) throws SQLException {
     
      boolean sucesso = false;
+
+        Connection conn = conexaoDAO.criaConexao();
 
         String sql = "INSERT INTO tb_voto( \n"
                 + "	id_candidato,\n"
@@ -139,7 +149,7 @@ public class VotoDAO  {
         try {
             stm = conn.prepareStatement(sql);
             
-            Candidato candidato = candidatoDAO.buscarCandidatoByNumeroCandidato(conn, numeroCandidato);
+            Candidato candidato = candidatoDAO.buscarCandidatoByNumeroCandidato(numeroCandidato);
             
             if(candidato == null){
                 try {
@@ -164,6 +174,7 @@ public class VotoDAO  {
 
         } finally {
             stm.close();
+            conexaoDAO.fecharConexao(conn);
 
         }
 
@@ -174,9 +185,11 @@ public class VotoDAO  {
 
 
 
-    public boolean inserirVotoNulo(Connection conn, int idEleitor, int idEleicao) throws SQLException {
+    public boolean inserirVotoNulo(int idEleitor, int idEleicao) throws SQLException {
     
      boolean sucesso = false;
+   
+        Connection conn = conexaoDAO.criaConexao();
 
         String sql = "INSERT INTO tb_voto( \n"
                 + "	id_candidato,\n"
@@ -203,7 +216,7 @@ public class VotoDAO  {
 
         } finally {
             stm.close();
-
+            this.conexaoDAO.fecharConexao(conn);
         }
 
         return sucesso;
