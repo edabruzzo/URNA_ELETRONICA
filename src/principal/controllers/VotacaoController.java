@@ -3,29 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers;
+package principal.controllers;
 
-import dao.CandidatoDAO;
-import dao.ConexaoDAO;
-import dao.EleicaoDAO;
-import dao.EleitorDAO;
-import dao.VotoDAO;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import principal.model.Eleicao;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.Candidato;
-import model.Eleicao;
-import model.Eleitor;
-import model.Voto;
+import principal.dao.CandidatoDAO;
+import principal.dao.EleicaoDAO;
+import principal.dao.EleitorDAO;
+import principal.dao.VotoDAO;
+import java.io.IOException;
+import principal.model.Candidato;
+import principal.model.Eleitor;
+import principal.model.Voto;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *

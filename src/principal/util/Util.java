@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package util;
+package principal.util;
 
-import dao.ConexaoDAO;
-import java.sql.SQLException;
+import principal.dao.ConexaoDAO;
+
 import java.util.Scanner;
 
 /**
