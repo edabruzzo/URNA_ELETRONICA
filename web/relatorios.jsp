@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <!DOCTYPE html>
 <html>
@@ -20,6 +21,10 @@
 
     <%-- Chart.js CDN --%>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+    <%-- Underscore.js --%>
+    <%--    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"--%>
+    <%--            integrity="sha256-G7A4JrJjJlFqP0yamznwPjAApIKPkadeHfyIwiaa9e0=" crossorigin="anonymous"></script>--%>
 
 </head>
 <body>
@@ -40,44 +45,87 @@
             <li class="page-item disabled">
                 <a class="page-link" href="${pageContext.request.contextPath}/relatorios">Relatórios</a>
             </li>
-            <%--        <li class="page-item">--%>
-            <%--            <a class="page-link" href="${pageContext.request.contextPath}/criarInfra">Criar Infraestrutura</a>--%>
-            <%--        </li>--%>
-            <%--        <li class="page-item">--%>
-            <%--            <a class="page-link" href="${pageContext.request.contextPath}/criarInfra">Criar Infraestrutura</a>--%>
-            <%--        </li>--%>
         </ul>
     </nav>
 
+    <div class="row mb-2">
 
-    <div class="row">
-        <div class="col-5">
+        <%--@elvariable id="listaVotosPorPartido" type="java.util.HashMap"--%>
+        <%--@elvariable id="listaVotosPorCandidato" type="java.util.HashMap"--%>
+        <c:forEach var="voto" items="${listaVotosPorPartido}">
+            <div class="col">
+                <button class="btn btn-primary" onclick="
+                        update_partido_chart([
+                <c:forEach var="dataset" items="${listaVotosPorPartido[voto.key]}"><c:out value="${dataset.value}"/>,
+                </c:forEach> ],
+                        [
+                <c:forEach var="dataset" items="${listaVotosPorPartido[voto.key]}">'<c:out value="${dataset.key}"/>',
+                </c:forEach> ]);
+                        update_candidato_chart([
+                <c:forEach var="dataset" items="${listaVotosPorCandidato[voto.key]}"><c:out value="${dataset.value}"/>,
+                </c:forEach> ],
+                        [
+                <c:forEach var="dataset" items="${listaVotosPorCandidato[voto.key]}">'<c:out value="${dataset.key}"/>',
+                </c:forEach> ])
+                        ">
+                    <c:out value="${voto.key}"/>
+                </button>
+            </div>
+        </c:forEach>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-6">
             <canvas id="graficoVotosPartido" width="400px" height="400px"></canvas>
         </div>
-        <div class="col-5">
+        <div class="col-6">
             <canvas id="graficoVotosCandidato" width="400px" height="400px"></canvas>
         </div>
+    </div>
+
+    <div class="row">
+        <table id="tabelaVotosPorCandidato" class="table table-sm">
+
+            <thead class="thead-dark w-100">
+            <tr>
+                <th scope="col">Nome do Candidato</th>
+                <th scope="col">Quantidade de votos</th>
+
+            </tr>
+            </thead>
+            <c:forEach var="voto" items="${listaVotosPorCandidato}">
+                <tr>
+                    <td><c:out value="${voto.key}"/></td>
+                    <td><c:out value="${voto.value}"/></td>
+                </tr>
+            </c:forEach>
+        </table>
     </div>
 
 </div>
 
 <script>
+
+    function update_partido_chart(array, labels) {
+        graficoPorPartido.data.labels = labels;
+        graficoPorPartido.data.datasets[0].data = array;
+        graficoPorPartido.update();
+    }
+
+    function update_candidato_chart(array, labels) {
+        graficoVotosCandidato.data.labels = labels;
+        graficoVotosCandidato.data.datasets[0].data = array;
+        graficoVotosCandidato.update();
+    }
+
     let ctx = document.getElementById('graficoVotosPartido');
     let graficoPorPartido = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: [
-                <c:forEach var="voto" items="${listaVotosPorPartido}">
-                "<c:out value="${voto.key}"/>",
-                </c:forEach>
-            ],
+            labels: [],
             datasets: [{
                 label: "# Votos por partido",
-                data: [
-                    <c:forEach var="voto" items="${listaVotosPorPartido}">
-                    <c:out value="${voto.value}"/>,
-                    </c:forEach>
-                ],
+                data: [],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -111,18 +159,10 @@
     let graficoVotosCandidato = new Chart(ctxCandidato, {
         type: 'bar',
         data: {
-            labels: [
-                <c:forEach var="voto" items="${listaVotosPorCandidato}">
-                "<c:out value="${voto.key}"/>",
-                </c:forEach>
-            ],
+            labels: [],
             datasets: [{
                 label: "# Votos por Candidato",
-                data: [
-                    <c:forEach var="voto" items="${listaVotosPorCandidato}">
-                    <c:out value="${voto.value}"/>,
-                    </c:forEach>
-                ],
+                data: [],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -153,37 +193,6 @@
         }
     });
 </script>
-
-
-
-
-
-    <div class="col-8">
-                    <table id="tabelaVotosPorCandidato" class="table table-sm">
-
-                        <thead class="thead-dark w-100">
-                            <tr>
-                                
-                                <th scope="col">Nome do Candidato</th>
-                                <th scope="col">Quantidade de votos</th>
-
-                            </tr>
-                        </thead>
-
-
-                        <c:forEach var="voto" items="${listaVotosPorCandidato}">
-                            <tr>
-                                <td><c:out value="${voto.key}"/></td>
-                                <td><c:out value="${voto.value}"/></td>
-                            </tr>
-                        </c:forEach>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-
-
 
 
 </body>
